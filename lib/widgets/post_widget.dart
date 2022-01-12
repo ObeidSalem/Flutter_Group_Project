@@ -5,8 +5,9 @@ import 'package:group_project_flutter/modules/post.dart';
 class PostWidget extends StatelessWidget {
 
   late Post post;
+  late String currentUserName;
 
-  PostWidget(this.post);
+  PostWidget(this.post, this.currentUserName, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +29,22 @@ class PostWidget extends StatelessWidget {
                     )
                 ),
                 SizedBox(height: 10.0),
-                SizedBox(
-                    width: double.infinity,
-                    child: Text(
-                      'By ${post.auther}',
-                      style: const TextStyle(color: Colors.black87, fontSize: 14),
-                    )
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                        child: Text(
+                          'By ${post.auther}',
+                          style: const TextStyle(color: Colors.black87, fontSize: 14),
+                        )
+                    ),
+                    if (currentUserName == post.auther) IconButton(                                //Tahsin This is for delete post
+                      icon: Icon(Icons.highlight_remove_outlined),
+                      onPressed: () {
+
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
