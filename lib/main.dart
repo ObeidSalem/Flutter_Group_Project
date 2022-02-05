@@ -1,13 +1,16 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
+import 'package:group_project_flutter/user.dart';
 import 'package:group_project_flutter/widgets/post_widget.dart';
 import 'modules/post.dart';
-import 'auth/login.dart';
-import 'auth/login.dart';
+import 'widgets/login_page.dart';
+import 'user.dart';
+// import 'auth/login.dart';
+// import 'auth/login.dart';
 
 void main() {
-  runApp(MaterialApp(home: const MyApp()));
+  runApp(const MaterialApp(home: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -31,17 +34,13 @@ class _MyAppState extends State<MyApp> {
         "Tahsin Murtag"),
   ];
 
-  bool showSignIn = true;
-  void toggleView() {
-    //print(showSignIn.toString());
-    setState(() => showSignIn = !showSignIn);
-  }
-
   late TextEditingController newPostController;
   late String newPost;
   String currentUserName =
       "Obeid Salem"; //Tahsin replace this later with user ID
   String currentUserId = "";
+
+  // String uid = "";
   Future<String?> openDialog() => showDialog<String>(
         context: context,
         builder: (builder) => AlertDialog(
@@ -81,52 +80,56 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return (currentUserId == "")
-        ? SignIn(
-            toggleView: toggleView,
-          )
-        : Scaffold(
-            appBar: AppBar(
-              title: Text("Post App"),
-              actions: <Widget>[
-                Padding(
-                    padding: EdgeInsets.only(right: 20.0),
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: IconButton(
-                        //Abdi This is for log out
-                        icon: Icon(Icons.logout),
-                        onPressed: () {},
-                      ),
-                    )),
-              ],
-            ),
-            body: ListView(
-                children: posts.map((post) {
-              return PostWidget(post, currentUserName);
-            }).toList()),
-            floatingActionButton: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                FloatingActionButton(
-                  onPressed: null, //Tahsin this to refresh/fetch data
-                  child: Icon(Icons.refresh),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                FloatingActionButton(
-                  //Tahsin this to add new post
-                  onPressed: () async {
-                    final newPost = await openDialog();
-                    if (newPost == null || newPost.isEmpty) return;
-                    setState(() => this.newPost = newPost);
-                    posts.add(Post(newPost, currentUserName));
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Post App"),
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {},
+                child: FloatingActionButton(
+                  child: const Icon(Icons.login),
+                  heroTag: 'log',
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LogInWedget()),
+                    );
                   },
-                  child: Icon(Icons.post_add),
                 ),
-              ],
-            ),
-          );
+              )),
+        ],
+      ),
+      body: ListView(
+          children: posts.map((post) {
+        return PostWidget(post, currentUserName);
+      }).toList()),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            heroTag: '1',
+            onPressed: null, //Tahsin this to refresh/fetch data
+            child: Icon(Icons.refresh),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          FloatingActionButton(
+            heroTag: '2',
+            //Tahsin this to add new post
+            onPressed: () async {
+              final newPost = await openDialog();
+              if (newPost == null || newPost.isEmpty) return;
+              setState(() => this.newPost = newPost);
+              posts.add(Post(newPost, currentUserName));
+            },
+            child: Icon(Icons.post_add),
+          ),
+        ],
+      ),
+    );
   }
 }
