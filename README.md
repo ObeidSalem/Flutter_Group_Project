@@ -10,7 +10,6 @@ instructions and guidelines:
 Download the zib file to run the app
 sign up then start posting your posts
 you may refresh the page to git latest posts
-you may delete your own postes later
 you may log out at the end.
 
 ![image](https://user-images.githubusercontent.com/86645986/149176044-b64855c3-3af9-42b6-aa23-81bcaff6c40b.png)
